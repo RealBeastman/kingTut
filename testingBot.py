@@ -66,4 +66,5 @@ async def admin_check(ctx):
     # Simply sends a message stating that this user is an admin.
     await ctx.send(f"{ctx.author.display_name} is an admin!")
 
+
 bot.run(TOKEN)
