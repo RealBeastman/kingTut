@@ -1,5 +1,6 @@
 # kingTut
 A simple discord bot for practicing python, and creating fun discord servers.  
+Dependencies - discord.py, python-dotenv, urllib
   
 Upcoming Features/Ideas:  
 • Dictionary - Input word, output definition (i.e. !dict apple -> "the round fruit of...") # In Testing  
