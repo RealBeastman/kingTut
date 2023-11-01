@@ -2,7 +2,7 @@
 A simple discord bot for practicing python, and creating fun discord servers.  
   
 Upcoming Features/Ideas:  
-• Dictionary - Input word, output definition (i.e. !dict apple -> "the round fruit of...") # In Tessting  
+• Dictionary - Input word, output definition (i.e. !dict apple -> "the round fruit of...") # In Testing  
   • Synonym - Output synomyms  
   • Antonym - Output antonyms  
 • Dice game - Roll dice, keep dice, lowest score wins  
