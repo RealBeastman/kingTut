@@ -2,7 +2,7 @@
 A simple discord bot for practicing python, and creating fun discord servers.  
   
 Upcoming Features/Ideas:  
-• Dictionary - Input word, output definition (i.e. !dict apple -> "the round fruit of...")  
+• Dictionary - Input word, output definition (i.e. !dict apple -> "the round fruit of...") # In Tessting  
   • Synonym - Output synomyms  
   • Antonym - Output antonyms  
 • Dice game - Roll dice, keep dice, lowest score wins  
@@ -11,7 +11,7 @@ Upcoming Features/Ideas:
 •  
   
 Upcoming changes/updates to current features:  
-• Initiative - update to allow for "speed" as an addition to rolled value. "Speed" being based off of a trackabe object inside the server. Example: admin role carries 4 speed, default role carries 2 speed  
-• Roll - Add example command to the help parameter  
+• Initiative - update to allow for "speed" as an addition to rolled value. "Speed" being based off of a trackabe object inside the server. Example: admin role carries 4 speed, default role carries 2 speed # In testing  
+• Roll - Add example command to the help parameter # In testing  
 •   
   
