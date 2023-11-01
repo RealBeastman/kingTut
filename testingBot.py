@@ -4,8 +4,10 @@
 # as well as create a fun environment for discord servers that I am a part of.
 
 import os
+import json
 import random
 import discord
+import urllib.request
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -37,13 +39,13 @@ async def random_question(ctx):
     await ctx.send(response)
 
 @bot.command(name="roll", help="Simulates rolling dice.")
-async def roll(ctx, number_of_dice: int = commands.parameter(description="Number of Dice"), number_of_sides: int = commands.parameter(description="Number of Sides")):
+async def roll(ctx, number_of_dice: int = commands.parameter(description="- Int: Number of Dice"), number_of_sides: int = commands.parameter(description=" - Int: Number of Sides")):
     # Roll a user decided number of dice with user decided number of sides.
     dice = [str(random.choice(range(1, number_of_sides + 1))) for _ in range(number_of_dice)]
     await ctx.send(", ".join(dice))
 
-@bot.command(name="initiative", help="Rolls initiative for selected users.")
-async def initiative(ctx, players: str = commands.parameter(description="Enter players separated by a commma and enclosed in quotes. 'User1, User2, User3'")):
+@bot.command(name="initiative", help='Rolls initiative for selected users.')
+async def initiative(ctx, players: str = commands.parameter(description="- 'user1, user2, user3'")):
     # Rolls standard DND initiative (20-sided die) for entered players.
     players_dict = {}
     players_list = list(players.split(", ")) # Converts command string into list for iterable functionality.
@@ -66,5 +68,22 @@ async def admin_check(ctx):
     # Simply sends a message stating that this user is an admin.
     await ctx.send(f"{ctx.author.display_name} is an admin!")
 
+@bot.command(name="dict", help="Enter a word, and the bot will output the definition. (!dict volume)")
+async def dictionary(ctx, word: str = commands.parameter(description="Enter a word")):
+    DICT_KEY = os.getenv("WEBSTERS_DICT_KEY")
+    apiurl = f'https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={DICT_KEY}'
+    response = urllib.request.urlopen(apiurl)
+    json_obj = json.load(response)
+    definitions = json_obj[0]['shortdef']
+    num = 1
+
+    if len(definitions) > 1:
+        await ctx.send(f"The definitions of {word.capitalize()} are:")
+    else:
+        await ctx.send(f"The definition of {word.capitalize()} is:")
+
+    for definition in definitions:
+        await ctx.send(f"{num}. {definition}")
+        num += 1
 
 bot.run(TOKEN)
