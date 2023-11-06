@@ -43,12 +43,15 @@ async def random_question(ctx):
 
 @bot.command(name="roll", help="Simulates rolling dice.")
 async def roll(ctx, number_of_dice: int = commands.parameter(description="- Int: Number of Dice"), number_of_sides: int = commands.parameter(description=" - Int: Number of Sides")):
+async def roll(ctx, number_of_dice: int = commands.parameter(description="Number of Dice"), number_of_sides: int = commands.parameter(description="Number of Sides")):
     # Roll a user decided number of dice with user decided number of sides.
     dice = [str(random.choice(range(1, number_of_sides + 1))) for _ in range(number_of_dice)]
     await ctx.send(", ".join(dice))
 
 @bot.command(name="initiative", help='Rolls initiative for selected users.')
 async def initiative(ctx, players: str = commands.parameter(description="- 'user1, user2, user3'")):
+@bot.command(name="initiative", help="Rolls initiative for selected users.")
+async def initiative(ctx, players: str = commands.parameter(description="Enter players separated by a commma and enclosed in quotes. 'User1, User2, User3'")):
     # Rolls standard DND initiative (20-sided die) for entered players.
     players_dict = {}
     players_list = list(players.split(", ")) # Converts command string into list for iterable functionality.
