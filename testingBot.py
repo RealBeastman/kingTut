@@ -5,6 +5,7 @@
 
 import os
 import json
+import asyncio
 import random
 import discord
 import urllib.request
@@ -24,11 +25,13 @@ bot = commands.Bot(command_prefix="!", description=description, intents=intents)
 
 @bot.event
 async def on_command_error(ctx, error):
+    # Displays error message when users do not have a required role inside the guild
     if isinstance(error, commands.errors.CheckFailure):
         await ctx.send(f"{ctx.author.display_name}, you do not have the required role for this command.")
 
 @bot.event
 async def on_ready():
+    # Provides startup message to console
     print(f"{bot.user.name} has connected to Discord!")
 
 @bot.command(name="question", help="This will give you a random question from a list of 4.")
@@ -61,13 +64,6 @@ async def initiative(ctx, players: str = commands.parameter(description="- 'user
     for player, roll in sorted_players_dict.items(): # Send the players and initiative rolls to channel.
         await ctx.send(f"{player} - {roll}")
 
-
-@bot.command(name="admin", help="A way to brag that you are an admin.")
-@commands.has_role("admin") # Only run this command if user has selected role
-async def admin_check(ctx):
-    # Simply sends a message stating that this user is an admin.
-    await ctx.send(f"{ctx.author.display_name} is an admin!")
-
 @bot.command(name="dict", help="Enter a word, and the bot will output the definition. (!dict volume)")
 async def dictionary(ctx, word: str = commands.parameter(description="Enter a word")):
     DICT_KEY = os.getenv("WEBSTERS_DICT_KEY")
@@ -75,15 +71,35 @@ async def dictionary(ctx, word: str = commands.parameter(description="Enter a wo
     response = urllib.request.urlopen(apiurl)
     json_obj = json.load(response)
     definitions = json_obj[0]['shortdef']
+    part = json_obj[0]['fl']
     num = 1
 
-    if len(definitions) > 1:
-        await ctx.send(f"The definitions of {word.capitalize()} are:")
-    else:
-        await ctx.send(f"The definition of {word.capitalize()} is:")
+    await ctx.send(f"{word.capitalize()} ({part}):")
 
     for definition in definitions:
         await ctx.send(f"{num}. {definition}")
         num += 1
+
+@bot.command(name="typing", help="Bot is typing.")
+async def typing(ctx):
+    async with ctx.typing():
+        await asyncio.sleep(1)
+        await ctx.send("I was typing!")
+
+@bot.command(name="nick", help="change nickname")
+async def chnick(ctx, *, nick=None, member: discord.Member=None):
+    if nick == None:
+        nick = 'A cool nickname'
+    try:
+        if member:
+            name_before = member.display_name
+            await member.edit(nick=nick)
+        else:
+            member = ctx.message.author
+            name_before = member.display_name
+            await member.edit(nick=nick)
+        await ctx.send(f"Changed {member.mention}'s nickname from {name_before} to {member.display_name}")
+    except Exception as e:
+        await ctx.send(str(e))
 
 bot.run(TOKEN)
